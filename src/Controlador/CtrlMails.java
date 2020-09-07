@@ -6,7 +6,8 @@
 package Controlador;
 
 import Modelo.ConsultaProducto;
-import Vista.frmSupermercado;
+import Vista.ElegirArchivo;
+import Vista.FrmSupermercado;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,15 +32,35 @@ import javax.swing.JOptionPane;
  * @author JorgeG
  */
 public class CtrlMails {
-    ConsultaProducto productoConsulta = new ConsultaProducto();
-    frmSupermercado frm = new frmSupermercado();
-    
-    public CtrlMails(frmSupermercado frm){
-        this.frm = frm;
-        
+
+    private ConsultaProducto productoConsulta = new ConsultaProducto();
+    private FrmSupermercado frm = new FrmSupermercado();
+
+    private String filename = "";
+    private String path = "";
+
+    public String getFilename() {
+        return filename;
     }
-    
-        public void enviarCorreo() {
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public CtrlMails(FrmSupermercado frm) {
+        this.frm = frm;
+
+    }
+
+    public void enviarCorreo() {
         try {
             Properties props = new Properties();
             props.setProperty("mail.smtp.host", "smtp.gmail.com");
@@ -79,56 +101,82 @@ public class CtrlMails {
         }
     }
 
-    public void enviarCorreoAdjunto() {
+    public boolean enviarCorreoAdjunto() {
         try {
-            Properties props = new Properties();
-            props.setProperty("mail.smtp.host", "smtp.gmail.com");
-            props.setProperty("mail.smtp.starttls.enable", "true");
-            props.setProperty("mail.smtp.port", "587");
-            props.setProperty("mail.smtp.auth", "true");
 
-            Session session = Session.getDefaultInstance(props);
+            if (CtrlGetterSetter.esEmail(frm.txtCorreo.getText())) {
 
-            String correoRemitente = "jgonzalezc42@miumg.edu.gt";
-            String passwordRemitente = "odamaplaya3";
-            String correoReceptor = frm.txtCorreo.getText();
-            String asunto = "Correo en java - test";
-            String mensaje = "Hola<br>Este es el contenido de prueba<b>java</b><br><br>"
-                    + "por <b> Códigos de PRogramación </b>";
+                Properties props = new Properties();
+                props.setProperty("mail.smtp.host", "smtp.gmail.com");
+                props.setProperty("mail.smtp.starttls.enable", "true");
+                props.setProperty("mail.smtp.port", "587");
+                props.setProperty("mail.smtp.auth", "true");
 
-            BodyPart texto = new MimeBodyPart();
-            texto.setContent(mensaje, "text/html");
+                Session session = Session.getDefaultInstance(props);
+                String correoRemitente = "jgonzalezc42@miumg.edu.gt";
+                String passwordRemitente = "odamaplaya3";
 
-            BodyPart adjunto = new MimeBodyPart();
-            adjunto.setDataHandler(new DataHandler(new FileDataSource("C:/Users/JorgeG/productosreporte.pdf")));
-            adjunto.setFileName("reporte.pdf");
+                String correoReceptor = frm.txtCorreo.getText();
+                String asunto = "Correo en java - test";
+                String mensaje = "Hola<br>Este es el contenido de prueba<b>java</b><br><br>"
+                        + " <b> prueba</b>";
 
-            MimeMultipart multiParte = new MimeMultipart();
-            multiParte.addBodyPart(texto);
-            multiParte.addBodyPart(adjunto);
+                BodyPart texto = new MimeBodyPart();
+                texto.setContent(mensaje, "text/html");
 
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(correoRemitente));
+                BodyPart adjunto = new MimeBodyPart();
 
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(correoReceptor));
-            message.setSubject(asunto);
-            message.setContent(multiParte);
+                adjunto.setDataHandler(new DataHandler(new FileDataSource(path)));
 
-            Transport t = session.getTransport("smtp");
-            t.connect(correoRemitente, passwordRemitente);
-            t.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
-            t.close();
+                //String extension = path.substring(path.lastIndexOf("."), path.length());
 
-            JOptionPane.showMessageDialog(null, "Correo enviado");
+                adjunto.setFileName(filename);
+
+                MimeMultipart multiParte = new MimeMultipart();
+                multiParte.addBodyPart(texto);
+                
+                if(!path.equals("")){
+                    multiParte.addBodyPart(adjunto);
+                }
+
+                MimeMessage message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(correoRemitente));
+
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(correoReceptor));
+                message.setSubject(asunto);
+                message.setContent(multiParte);
+
+                Transport t = session.getTransport("smtp");
+                t.connect(correoRemitente, passwordRemitente);
+                t.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
+                t.close();
+
+                return true;
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe de ingresar un correo electrónico");
+                return false;
+            }
 
         } catch (AddressException ex) {
             Logger.getLogger(CtrlMails.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         } catch (MessagingException ex) {
             Logger.getLogger(CtrlMails.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
-    
-       public void enviarCorreoMasivo() {
+
+    public void setPathField() {
+
+
+           
+            frm.txtPath.setText(getPath());
+
+        
+    }
+
+    public void enviarCorreoMasivo() {
         String[] correos_destinos = productoConsulta.masivo();
         try {
 
@@ -184,5 +232,31 @@ public class CtrlMails {
             Logger.getLogger(CtrlMails.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    public void adjuntar() {
+
+
+        ElegirArchivo fc = new ElegirArchivo();
+
+        fc.ElegirFile.setCurrentDirectory(new java.io.File("."));
+        fc.ElegirFile.setDialogTitle("choosertitle");
+        fc.ElegirFile.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.ElegirFile.setAcceptAllFileFilterUsed(false);
+
+        if (fc.ElegirFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            //System.out.println("getCurrentDirectory(): " + fc.ElegirFile.getCurrentDirectory());
+            setFilename(fc.ElegirFile.getSelectedFile().getName());
+            setPath(String.valueOf(fc.ElegirFile.getSelectedFile()));
+            setPathField();
+            
+            
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "No se eligió ningún archivo");
+            setFilename("");
+            setPath("");
+            setPathField();
+        }
+    }
+
 }

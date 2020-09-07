@@ -6,14 +6,16 @@
 package Vista;
 
 import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -21,7 +23,7 @@ import javax.swing.table.TableRowSorter;
  *
  * @author JorgeG
  */
-public class frmSupermercado extends javax.swing.JFrame {
+public class FrmSupermercado extends javax.swing.JFrame {
 
     public CardLayout vista;
     public CardLayout vista2;
@@ -43,11 +45,13 @@ public class frmSupermercado extends javax.swing.JFrame {
         dml.addElement(arraylist);
     }
 
-    public frmSupermercado() {
+    public FrmSupermercado() {
         initComponents();
         vista = (CardLayout) panel0.getLayout();
         vista2 = (CardLayout) panelProductos.getLayout();
-
+        HtmlEditor s = new HtmlEditor();
+        s.initAndShowGUI();
+        paneHtml.add(s.p);
         //String[] datos = new String[2];
         //datos[0] = "uno";
         //datos[1] = "dos"; CÓDIGO PARA CONVERTIR UNA COLUMNA EN COMBOBOXES
@@ -138,14 +142,20 @@ public class frmSupermercado extends javax.swing.JFrame {
         btnEnviar = new javax.swing.JButton();
         txtCorreo = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        btnAdjunto = new javax.swing.JButton();
         btnMasivo = new javax.swing.JButton();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        btnAdjunto = new javax.swing.JButton();
+        txtPath = new javax.swing.JTextField();
+        paneHtml = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnProductos = new javax.swing.JButton();
         btnCorreo = new javax.swing.JButton();
+        btnSalirProductos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(1002, 317));
+        setMinimumSize(new java.awt.Dimension(1002, 314));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         panel0.setBackground(new java.awt.Color(0, 255, 0));
@@ -407,7 +417,7 @@ public class frmSupermercado extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttons, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                    .addComponent(buttons, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
                     .addComponent(textFields, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(table, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -417,6 +427,7 @@ public class frmSupermercado extends javax.swing.JFrame {
 
         panel0.add(panelProductos, "card2");
 
+        btnEnviar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnEnviar.setText("Enviar");
         btnEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -424,43 +435,69 @@ public class frmSupermercado extends javax.swing.JFrame {
             }
         });
 
+        txtCorreo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Correo:");
 
-        btnAdjunto.setText("Adjunto");
-
+        btnMasivo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnMasivo.setText("Masivo");
+
+        btnAdjunto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAdjunto.setText("Adjunto");
+        jSplitPane2.setLeftComponent(btnAdjunto);
+
+        txtPath.setEditable(false);
+        jSplitPane2.setRightComponent(txtPath);
+
+        paneHtml.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        paneHtml.setMaximumSize(new java.awt.Dimension(502, 176));
+
+        javax.swing.GroupLayout paneHtmlLayout = new javax.swing.GroupLayout(paneHtml);
+        paneHtml.setLayout(paneHtmlLayout);
+        paneHtmlLayout.setHorizontalGroup(
+            paneHtmlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        paneHtmlLayout.setVerticalGroup(
+            paneHtmlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 212, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout panelCorreoLayout = new javax.swing.GroupLayout(panelCorreo);
         panelCorreo.setLayout(panelCorreoLayout);
         panelCorreoLayout.setHorizontalGroup(
             panelCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCorreoLayout.createSequentialGroup()
-                .addContainerGap(383, Short.MAX_VALUE)
-                .addGroup(panelCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnMasivo)
+            .addGroup(panelCorreoLayout.createSequentialGroup()
+                .addGap(284, 284, 284)
+                .addGroup(panelCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCorreoLayout.createSequentialGroup()
+                        .addGap(34, 34, 34)
                         .addComponent(jLabel7)
-                        .addGap(77, 77, 77)
-                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
-                        .addGroup(panelCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAdjunto)
-                            .addComponent(btnEnviar))))
-                .addGap(132, 132, 132))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEnviar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnMasivo))
+                    .addComponent(paneHtml, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSplitPane2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         panelCorreoLayout.setVerticalGroup(
             panelCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCorreoLayout.createSequentialGroup()
-                .addGap(71, 71, 71)
+                .addGap(21, 21, 21)
                 .addGroup(panelCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMasivo)
                     .addComponent(btnEnviar)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addGap(39, 39, 39)
-                .addComponent(btnAdjunto)
-                .addGap(61, 61, 61)
-                .addComponent(btnMasivo)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSplitPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paneHtml, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         panel0.add(panelCorreo, "card3");
@@ -481,18 +518,24 @@ public class frmSupermercado extends javax.swing.JFrame {
             }
         });
 
+        btnSalirProductos.setText("Salir");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnProductos)
-                .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnCorreo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnProductos))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSalirProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -501,7 +544,9 @@ public class frmSupermercado extends javax.swing.JFrame {
                 .addComponent(btnProductos)
                 .addGap(18, 18, 18)
                 .addComponent(btnCorreo)
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnSalirProductos)
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(jPanel2);
@@ -544,23 +589,23 @@ public class frmSupermercado extends javax.swing.JFrame {
     private void tablaProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductosMouseClicked
         DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
         int selectedRowIndex = tablaProductos.getSelectedRow();
-        
+
         if (selectedRowIndex == -1) {
 
         } else {
             if (tablaProductos.getRowSorter() != null) { //<- esto arregla el index cuando se filtra
-            selectedRowIndex = tablaProductos.getRowSorter().convertRowIndexToModel(selectedRowIndex);
-            
-            txtIdProducto.setText(model.getValueAt(selectedRowIndex, 0).toString());
-            txtNombreProducto.setText(model.getValueAt(selectedRowIndex, 2).toString());
-            txtDesc.setText(model.getValueAt(selectedRowIndex, 3).toString());
-            txtCantidad.setText(model.getValueAt(selectedRowIndex, 4).toString());
-            txtPrecio.setText(model.getValueAt(selectedRowIndex, 5).toString());
+                selectedRowIndex = tablaProductos.getRowSorter().convertRowIndexToModel(selectedRowIndex);
 
-            //int selectedindex = Integer.parseInt(model.getValueAt(selectedRowIndex, 1).toString()) - 1;
-            //cbxTipo.setSelectedIndex(selectedindex);
-            cbxTipo.setSelectedItem(model.getValueAt(selectedRowIndex, 1).toString());
-        }
+                txtIdProducto.setText(model.getValueAt(selectedRowIndex, 0).toString());
+                txtNombreProducto.setText(model.getValueAt(selectedRowIndex, 2).toString());
+                txtDesc.setText(model.getValueAt(selectedRowIndex, 3).toString());
+                txtCantidad.setText(model.getValueAt(selectedRowIndex, 4).toString());
+                txtPrecio.setText(model.getValueAt(selectedRowIndex, 5).toString());
+
+                //int selectedindex = Integer.parseInt(model.getValueAt(selectedRowIndex, 1).toString()) - 1;
+                //cbxTipo.setSelectedIndex(selectedindex);
+                cbxTipo.setSelectedItem(model.getValueAt(selectedRowIndex, 1).toString());
+            }
         }
     }//GEN-LAST:event_tablaProductosMouseClicked
 
@@ -670,21 +715,23 @@ public class frmSupermercado extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmSupermercado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmSupermercado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmSupermercado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmSupermercado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmSupermercado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmSupermercado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmSupermercado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmSupermercado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmSupermercado().setVisible(true);
+                new FrmSupermercado().setVisible(true);
             }
         });
     }
@@ -701,6 +748,7 @@ public class frmSupermercado extends javax.swing.JFrame {
     public javax.swing.JButton btnProductos;
     public javax.swing.JButton btnRegistrar;
     public javax.swing.JButton btnReporte;
+    public javax.swing.JButton btnSalirProductos;
     private javax.swing.JPanel buttons;
     public javax.swing.JComboBox<String> cbxTipo;
     private javax.swing.JLabel jLabel1;
@@ -715,6 +763,8 @@ public class frmSupermercado extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
+    public javax.swing.JPanel paneHtml;
     public javax.swing.JPanel panel0;
     private javax.swing.JPanel panelCorreo;
     public javax.swing.JPanel panelProductos;
@@ -727,6 +777,7 @@ public class frmSupermercado extends javax.swing.JFrame {
     public javax.swing.JTextField txtDesc;
     public javax.swing.JTextField txtIdProducto;
     public javax.swing.JTextField txtNombreProducto;
+    public javax.swing.JTextField txtPath;
     public javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 }

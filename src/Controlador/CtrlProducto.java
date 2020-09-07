@@ -6,21 +6,26 @@
 package Controlador;
 
 import Modelo.ConsultaProducto;
+import Modelo.ConsultaUsuarios;
 import Modelo.Producto;
-import Vista.frmSupermercado;
+import Modelo.Usuarios;
+import Vista.Registro;
+import Vista.FrmSupermercado;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 
 public class CtrlProducto implements ActionListener {
 
-    private final frmSupermercado frm;
+    private final FrmSupermercado frm;
     private final ConsultaProducto productoConsulta;
-    
+
     private final CtrlMails mail;
 
     public final CtrlUtils productoUtils;
 
-    public CtrlProducto(Producto producto, ConsultaProducto productoConsulta, frmSupermercado frm, CtrlMails mail) {
+    public CtrlProducto(Producto producto, ConsultaProducto productoConsulta, FrmSupermercado frm, CtrlMails mail) {
         this.frm = frm;
         this.mail = mail;
         this.productoConsulta = productoConsulta;
@@ -34,6 +39,8 @@ public class CtrlProducto implements ActionListener {
         this.frm.btnEnviar.addActionListener(this);
         this.frm.btnAdjunto.addActionListener(this);
         this.frm.btnMasivo.addActionListener(this);
+        this.frm.btnSalirProductos.addActionListener(this);
+        //this.frm.btnAdjuntar.addActionListener(this);
         this.productoUtils = new CtrlUtils(producto, productoConsulta, frm);
         //this.frm.tablaProductos.setModel(consultaProducto.model);
         //this.frm.btnRegresarProductos.addActionListener(this);
@@ -42,7 +49,7 @@ public class CtrlProducto implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == frm.btnRegistrar) {
-            productoUtils.registrar();
+            productoUtils.registrar("producto");
         }
 
         //  if (e.getSource() == frm.btnBuscar) {
@@ -80,15 +87,47 @@ public class CtrlProducto implements ActionListener {
         }
 
         if (e.getSource() == frm.btnAdjunto) {
-
-            mail.enviarCorreoAdjunto();
+            mail.adjuntar();
+            //if(mail.enviarCorreoAdjunto()){
+              //  JOptionPane.showMessageDialog(null, "Correo enviado");
+            //}else{
+            //}
 
         }
 
         if (e.getSource() == frm.btnEnviar) {
-            mail.enviarCorreo();
+            mail.enviarCorreoAdjunto();
 
         }
+        
+       // if (e.getSource() == frm.btnAdjuntar){
+            
+         //   mail.adjuntar();
+            
+        //}
+
+ 
+
+        if (e.getSource() == frm.btnSalirProductos) {
+
+            frm.dispose();
+            Registro frmRegistro = new Registro();
+            inicializarUsuario(frmRegistro);
+
+            frmRegistro.pack();
+            frmRegistro.setLocationByPlatform(true);
+            frmRegistro.setVisible(true);
+
+        }
+
+    }
+
+    private static void inicializarUsuario(Registro frmRegistro) {
+
+        ConsultaUsuarios initConsultaUsuario = new ConsultaUsuarios();
+        Usuarios initUsuario = new Usuarios();
+
+        CtrlUsuarios initCtrlUsuario = new CtrlUsuarios(initUsuario, initConsultaUsuario, frmRegistro);
 
     }
 

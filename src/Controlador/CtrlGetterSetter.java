@@ -7,26 +7,57 @@ package Controlador;
 
 import Modelo.Producto;
 import Modelo.ConsultaProducto;
-import Vista.frmSupermercado;
+import Modelo.ConsultaUsuarios;
+import Modelo.Usuarios;
+import Vista.Registro;
+import Vista.FrmSupermercado;
 import javax.swing.JOptionPane;
 
 public class CtrlGetterSetter {
-        frmSupermercado frm;
-        ConsultaProducto consultaProducto;
-        Producto producto;
-        
-        public CtrlGetterSetter(frmSupermercado frm, ConsultaProducto consultaProducto, Producto producto){
-            this.consultaProducto = consultaProducto;
-            this.frm = frm;
-            this.producto = producto;
+
+    FrmSupermercado frm;
+    ConsultaProducto consultaProducto;
+    Producto producto;
+
+    Registro frmRegistro;
+    ConsultaUsuarios consultaUsuarios;
+    Usuarios usuario;
+
+    public CtrlGetterSetter(Registro frmRegistro, ConsultaUsuarios consultaUsuarios, Usuarios usuario) {
+        this.consultaUsuarios = consultaUsuarios;
+        this.usuario = usuario;
+        this.frmRegistro = frmRegistro;
+    }
+
+    public CtrlGetterSetter(FrmSupermercado frm, ConsultaProducto consultaProducto, Producto producto) {
+        this.consultaProducto = consultaProducto;
+        this.frm = frm;
+        this.producto = producto;
+    }
+
+    public String getTextField(String tipo, String field) {
+        String text = "";
+
+        switch (tipo) {
+            case "producto":
+                text = getFieldProducto(field);
+                break;
+            case "usuario":
+                text = getFieldUsuario(field);
+                break;
         }
-    
-        public String getTextField(String field) {
+
+        return text;
+
+    }
+
+    public String getFieldProducto(String field) {
         String text = "";
         switch (field) {
 
             case "id":
                 text = frm.txtIdProducto.getText();
+
                 break;
             //case "idtipo":
             //  text = frm.txtIdTipo.getText();
@@ -74,9 +105,42 @@ public class CtrlGetterSetter {
                 text = frm.txtCorreo.getText();
                 break;
         }
-
         return text;
+    }
 
+    public String getFieldUsuario(String field) {
+        String text = "";
+        switch (field) {
+
+            case "usuario":
+                text = frmRegistro.txtUsuario.getText();
+                break;
+            case "contraseña":
+                text = frmRegistro.txtPassword.getText();
+                break;
+            case "confirmarcontraseña":
+                text = frmRegistro.txtConfirmarPassword.getText();
+                break;
+
+            case "nombre":
+                text = frmRegistro.txtNombreUsuario.getText();
+                break;
+            case "correo":
+                text = frmRegistro.txtCorreoUsuario.getText();
+                break;
+                
+            case "tipo":
+                text = String.valueOf(frmRegistro.cbxTipoUsuario.getSelectedItem());
+                break;
+                
+            case "iniciousuario":
+                text = frmRegistro.txtIniciarUsuario.getText();
+                break;
+            case "iniciocontraseña":
+                text = frmRegistro.txtIniciarPassword.getText();
+                break;
+        }
+        return text;
     }
 
     public void setTextFields(String tipo) {
@@ -100,23 +164,69 @@ public class CtrlGetterSetter {
 
     }
 
-    public void setValues(String tipo) {
+    public void setValues(String tipo, String field) {
 
         switch (tipo) {
+
+            case "producto":
+                setProducto(field);
+                break;
+
+            case "usuario":
+                setUsuario(field);
+                break;
+
+        }
+
+    }
+
+    public void setProducto(String field) {
+
+        switch (field) {
             case "modificar":
-                producto.setId(Integer.parseInt(getTextField("id")));
-                producto.setId_tipo(Integer.parseInt(getTextField("idtipo")));
-                producto.setNombre(getTextField("nombre"));
-                producto.setDescripcion(getTextField("descripcion"));
-                producto.setCantidad(Integer.parseInt(getTextField("cantidad")));
-                producto.setPrecio(Double.parseDouble(getTextField("precio")));
+                producto.setId(Integer.parseInt(getTextField("producto", "id")));
+                producto.setId_tipo(Integer.parseInt(getTextField("producto", "idtipo")));
+                producto.setNombre(getTextField("producto", "nombre"));
+                producto.setDescripcion(getTextField("producto", "descripcion"));
+                producto.setCantidad(Integer.parseInt(getTextField("producto", "cantidad")));
+                producto.setPrecio(Double.parseDouble(getTextField("producto", "precio")));
                 break;
             case "registrar":
-                producto.setId_tipo(Integer.parseInt(getTextField("idtipo")));
-                producto.setNombre(getTextField("nombre"));
-                producto.setDescripcion(getTextField("descripcion"));
-                producto.setCantidad(Integer.parseInt(getTextField("cantidad")));
-                producto.setPrecio(Double.parseDouble(getTextField("precio")));
+                producto.setId_tipo(Integer.parseInt(getTextField("producto", "idtipo")));
+                producto.setNombre(getTextField("producto", "nombre"));
+                producto.setDescripcion(getTextField("producto", "descripcion"));
+                producto.setCantidad(Integer.parseInt(getTextField("producto", "cantidad")));
+                producto.setPrecio(Double.parseDouble(getTextField("producto", "precio")));
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Error al settear texto");
+                break;
+        }
+
+    }
+
+    public void setUsuario(String field) {
+
+        switch (field) {
+            case "registrar":
+                usuario.setUsuario(getTextField("usuario", "usuario"));
+                
+                String pwhashed = BCrypt.hashpw(getTextField("usuario", "contraseña"), BCrypt.gensalt());
+                usuario.setPassword(pwhashed);
+                usuario.setNombre(getTextField("usuario", "nombre"));
+                usuario.setCorreo(getTextField("usuario", "correo"));
+                
+                if(getTextField("usuario", "tipo").equals("Administrador")){
+                    usuario.setIdtipousuario(1);
+                }else{
+                    usuario.setIdtipousuario(2);
+                }
+                
+                break;
+                
+            case "iniciarSesion":
+                usuario.setPassword(getTextField("usuario", "iniciocontraseña"));
+                usuario.setUsuario(getTextField("usuario", "iniciousuario"));
                 break;
             default:
                 JOptionPane.showMessageDialog(null, "Error al settear texto");
@@ -125,4 +235,9 @@ public class CtrlGetterSetter {
 
     }
     
+    static boolean esEmail(String email) {
+      String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+      return email.matches(regex);
+   }
+
 }

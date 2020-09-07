@@ -8,22 +8,30 @@ package Controlador;
 import Modelo.Producto;
 import Modelo.ConsultaProducto;
 import static Modelo.ConsultaProducto.model;
-import Vista.frmSupermercado;
+import Modelo.ConsultaUsuarios;
+import Modelo.Usuarios;
+import Vista.Registro;
+import Vista.FrmSupermercado;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-
 /**
  *
  * @author JorgeG
  */
 public class CtrlUtils {
 
-    private final frmSupermercado frm;
+    private FrmSupermercado frm;
     private Producto producto;
     private ConsultaProducto productoConsulta;
+
+    private Registro frmRegistro;
+    private Usuarios usuario;
+    private ConsultaUsuarios consultaUsuario;
+
     public CtrlGetterSetter gs;
     private String[] comboTipoProducto;
-
+    
+    public int esAdministrador;
     //ejemplo constructor para usar en otra clase
     //public ctrlUtils(Cliente cliente, ConsultaCliente clienteConsulta, frmSupermercado frm) {
     //    this.frm = frm;
@@ -31,9 +39,16 @@ public class CtrlUtils {
     //this.frm.tablaProductos.setModel(consultaProducto.model);
     //this.frm.btnRegresarProductos.addActionListener(this);
     // }
-    public CtrlUtils(Producto producto, ConsultaProducto productoConsulta, frmSupermercado frm) {
-        this.frm = frm;
+    public CtrlUtils(Usuarios usuario, ConsultaUsuarios consultaUsuario, Registro frmRegistro) {
+        this.frmRegistro = frmRegistro;
+        this.usuario = usuario;
+        this.consultaUsuario = consultaUsuario;
+        
+        this.gs = new CtrlGetterSetter(frmRegistro, consultaUsuario, usuario);
+    }
 
+    public CtrlUtils(Producto producto, ConsultaProducto productoConsulta, FrmSupermercado frm) {
+        this.frm = frm;
         this.producto = producto;
         this.productoConsulta = productoConsulta;
         this.gs = new CtrlGetterSetter(frm, productoConsulta, producto);
@@ -42,6 +57,7 @@ public class CtrlUtils {
     }
 
     public String[] getComboTipoProducto() {
+
         return comboTipoProducto;
     }
 
@@ -79,35 +95,64 @@ public class CtrlUtils {
         gs.setTextFields("limpiar");
     }
 
-    public void registrar() {
-        if (notEmpty((gs.getTextField("idtipo"))) && notEmpty(gs.getTextField("nombre"))
-                && notEmpty(gs.getTextField("descripcion")) && notEmpty(gs.getTextField("cantidad"))
-                && notEmpty(gs.getTextField("precio"))) {
+    public void registrar(String opcion) {
+        switch (opcion) {
+            case "producto":
 
-            gs.setValues("registrar");
+                if (allNotEmpty("registrarProducto")) {
 
-            if (productoConsulta.registrar(producto)) {
-                int cantColumnas = model.getColumnCount();
-                String[] nuevaFila = new String[cantColumnas];
+                    gs.setValues("producto", "registrar");
 
-                nuevaFila[0] = gs.getTextField("idtipo");
-                nuevaFila[1] = gs.getTextField("tipo");
-                nuevaFila[2] = gs.getTextField("nombre");
-                nuevaFila[3] = gs.getTextField("descripcion");
-                nuevaFila[4] = gs.getTextField("cantidad");
-                nuevaFila[5] = gs.getTextField("precio");
+                    if (productoConsulta.registrar(producto)) {
+                        int cantColumnas = model.getColumnCount();
+                        String[] nuevaFila = new String[cantColumnas];
 
-                model.addRow(nuevaFila);
-            }
+                        nuevaFila[0] = gs.getTextField("producto", "idtipo");
+                        nuevaFila[1] = gs.getTextField("producto", "tipo");
+                        nuevaFila[2] = gs.getTextField("producto", "nombre");
+                        nuevaFila[3] = gs.getTextField("producto", "descripcion");
+                        nuevaFila[4] = gs.getTextField("producto", "cantidad");
+                        nuevaFila[5] = gs.getTextField("producto", "precio");
 
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe de llenar todos los datos, intente de nuevo");
+                        model.addRow(nuevaFila);
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debe de llenar todos los datos, intente de nuevo");
+                }
+
+                break;
+            case "usuario":
+
+                if (allNotEmpty("registrarUsuario")) {
+                    if (gs.getTextField("usuario", "confirmarcontraseña").equals(gs.getTextField("usuario", "contraseña"))) {
+
+                        if (gs.esEmail(gs.getTextField("usuario", "correo"))) {
+                            gs.setValues("usuario", "registrar");
+
+                            if (consultaUsuario.registrar(usuario)) {
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Debe de ingresar una dirección de correo válida");
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Las contraseñas deben de ser iguales");
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debe de llenar todos los datos, intente de nuevo");
+                }
+
+                break;
+
         }
+
     }
 
     public void modificar() {
-        if (notEmpty(gs.getTextField("id"))) {
-            gs.setValues("modificar");
+        if (notEmpty(gs.getTextField("producto", "id"))) {
+            gs.setValues("producto", "modificar");
             if (productoConsulta.modificar(producto)) {
 
                 JOptionPane.showMessageDialog(null, "Producto modificado");
@@ -120,7 +165,7 @@ public class CtrlUtils {
     }
 
     public void eliminar() {
-        if (notEmpty(gs.getTextField("id")) && notEmpty(gs.getTextField("nombre"))) {
+        if (notEmpty(gs.getTextField("producto", "id")) && notEmpty(gs.getTextField("producto", "nombre"))) {
             producto.setId(Integer.parseInt(frm.txtIdProducto.getText()));
             producto.setNombre(frm.txtNombreProducto.getText());
 
@@ -136,7 +181,41 @@ public class CtrlUtils {
         }
     }
 
+    public void iniciarSesion() {
 
+        if (allNotEmpty("iniciarSesion")) {
+            gs.setValues("usuario", "iniciarSesion");
+            if (consultaUsuario.iniciarSesion(usuario)) {
+
+                FrmSupermercado frm = new FrmSupermercado();
+                frmRegistro.dispose();
+                inicializarProducto(frm);
+
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe de llenar todos los datos");
+        }
+
+    }
+
+    public void iniciarSesionAdministrador() {
+        esAdministrador = 0;
+        if (allNotEmpty("iniciarSesion")) {
+            gs.setValues("usuario", "iniciarSesion");
+
+            if (consultaUsuario.iniciarSesionAdministrador(usuario)) {
+
+                esAdministrador = 1;
+            }else{
+                esAdministrador = 0;
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe de llenar todos los datos");
+        }
+
+    }
 
     public static boolean notEmpty(final String textField) {
         // Null-safe, short-circuit evaluation.
@@ -171,10 +250,55 @@ public class CtrlUtils {
     //     JOptionPane.showMessageDialog(null, "Debe de ingresar el dato para la busqueda");
     //   }
     // }
-
     public void showTable(String tituloTabla) {
 
         JOptionPane.showMessageDialog(null, new JScrollPane(productoConsulta.getTabla()), tituloTabla, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public boolean allNotEmpty(String opcion) {
+
+        switch (opcion) {
+            case "registrarProducto":
+                if (notEmpty((gs.getTextField("producto", "idtipo"))) && notEmpty(gs.getTextField("producto", "nombre"))
+                        && notEmpty(gs.getTextField("producto", "descripcion")) && notEmpty(gs.getTextField("producto", "cantidad"))
+                        && notEmpty(gs.getTextField("producto", "precio"))) {
+                    return true;
+                }
+
+                break;
+
+            case "registrarUsuario":
+                if (notEmpty(gs.getTextField("usuario", "usuario")) && notEmpty(gs.getTextField("usuario", "contraseña"))
+                        && notEmpty(gs.getTextField("usuario", "confirmarcontraseña")) && notEmpty(gs.getTextField("usuario", "nombre"))
+                        && notEmpty(gs.getTextField("usuario", "correo"))) {
+                    return true;
+                }
+                break;
+
+            case "iniciarSesion":
+                if (notEmpty(gs.getTextField("usuario", "iniciocontraseña")) && notEmpty(gs.getTextField("usuario", "iniciousuario"))) {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
+    private static void inicializarProducto(FrmSupermercado frm) {
+
+        ConsultaProducto initConsultaProducto = new ConsultaProducto();
+        Producto initProducto = new Producto();
+
+        CtrlMails initMail = new CtrlMails(frm);
+
+        CtrlProducto initCtrlProducto = new CtrlProducto(initProducto, initConsultaProducto, frm, initMail);
+
+        initCtrlProducto.productoUtils.actualizar();
+        initCtrlProducto.productoUtils.actualizarComboBox();
+
+        frm.pack();
+        frm.setLocationByPlatform(true);
+        frm.setVisible(true);
     }
 
 }
