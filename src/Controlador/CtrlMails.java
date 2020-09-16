@@ -35,7 +35,7 @@ public class CtrlMails {
 
     private ConsultaProducto productoConsulta = new ConsultaProducto();
     private FrmSupermercado frm = new FrmSupermercado();
-
+    
     private String filename = "";
     private String path = "";
 
@@ -59,7 +59,9 @@ public class CtrlMails {
         this.frm = frm;
 
     }
-
+    
+    
+    
     public void enviarCorreo() {
         try {
             Properties props = new Properties();
@@ -101,7 +103,7 @@ public class CtrlMails {
         }
     }
 
-    public boolean enviarCorreoAdjunto() {
+    public boolean enviarCorreoAdjunto(String htmlText) {
         try {
 
             if (CtrlGetterSetter.esEmail(frm.txtCorreo.getText())) {
@@ -117,10 +119,10 @@ public class CtrlMails {
                 String passwordRemitente = "odamaplaya3";
 
                 String correoReceptor = frm.txtCorreo.getText();
-                String asunto = "Correo en java - test";
-                String mensaje = "Hola<br>Este es el contenido de prueba<b>java</b><br><br>"
-                        + " <b> prueba</b>";
-
+                String asunto = frm.txtAsunto.getText();
+                
+                String mensaje = htmlText;
+                
                 BodyPart texto = new MimeBodyPart();
                 texto.setContent(mensaje, "text/html");
 

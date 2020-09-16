@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
 public class CtrlUsuarios implements ActionListener {
 
     private final Registro frmRegistro;
-    private final CtrlUtils usuarioUtils;
+    private final CtrlConsultas usuarioUtils;
 
     public CtrlUsuarios(Usuarios usuario, ConsultaUsuarios consultaUsuario, Registro frmRegistro) {
         this.frmRegistro = frmRegistro;
@@ -19,7 +19,7 @@ public class CtrlUsuarios implements ActionListener {
         this.frmRegistro.btnIniciarSesion.addActionListener(this);
         this.frmRegistro.btnRegistrarEntrar.addActionListener(this);
         this.frmRegistro.btnRegistroSalir.addActionListener(this);
-        this.usuarioUtils = new CtrlUtils(usuario, consultaUsuario, frmRegistro);
+        this.usuarioUtils = new CtrlConsultas(usuario, consultaUsuario, frmRegistro);
 
     }
 

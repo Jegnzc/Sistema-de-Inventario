@@ -7,8 +7,6 @@ license header, choose License Headers in Project Properties.
  */
 package Vista;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -19,42 +17,69 @@ import javax.swing.JPanel;
 public class HtmlEditor{
 
     JPanel p = new JPanel();
-    
 
+    public JFXPanel fxPanel = new JFXPanel();
+    
+ 
+    
+    HTMLEditor ht;
+
+    public HTMLEditor getHt() {
+        return ht;
+    }
+
+    public void setHt(HTMLEditor ht) {
+        this.ht = ht;
+    }
+    
+    public String getHTML(){
+        String text = ht.getHtmlText();
+        return text;
+    }
+    
     public void initAndShowGUI() {
        // This method is invoked on Swing thread
-       final JFXPanel fxPanel = new JFXPanel();
+       
+       int x = 600;
+       int y = 199;
        this.p.add(fxPanel);
-       this.p.setSize(600,225);
+       
+       this.p.setSize(x,y);
+       
 
        Platform.runLater(new Runnable() {
            @Override
            public void run() {
-               initFX(fxPanel);
+               
+               ht = new HTMLEditor();
+               initFX(fxPanel, x, y, ht);
+               
            }
        });
    }
 
-    private static void initFX(JFXPanel fxPanel) {
+    private void initFX(JFXPanel fxPanel, int x, int y, HTMLEditor ht) {
        // This method is invoked on JavaFX thread
-       Scene scene = createScene();
+       Scene scene = createScene(x, y, ht);
        fxPanel.setScene(scene);
    }
 
-    private static Scene createScene() {
+    public Scene createScene(int x, int y, HTMLEditor ht) {
         
-        HTMLEditor ht = new HTMLEditor();
+        
         // Set the Height of the HTMLEditor
-        ht.setPrefHeight(225);
+        ht.setPrefHeight(y);
         // Set the Width of the HTMLEditor
-        ht.setPrefWidth(600);
-        
+        ht.setPrefWidth(x);
         BorderPane pane = new BorderPane();
         pane.setCenter(ht);
-        pane.setPrefSize(600, 208);
+        pane.setPrefSize(x,y);
         
         Scene scene = new Scene(pane);
         
         return scene;
     }
+    
+
+    
 }

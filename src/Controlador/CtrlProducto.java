@@ -11,10 +11,15 @@ import Modelo.Producto;
 import Modelo.Usuarios;
 import Vista.Registro;
 import Vista.FrmSupermercado;
+import Vista.HtmlEditor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.web.HTMLEditor;
+import javafx.stage.Stage;
 
 public class CtrlProducto implements ActionListener {
 
@@ -23,7 +28,7 @@ public class CtrlProducto implements ActionListener {
 
     private final CtrlMails mail;
 
-    public final CtrlUtils productoUtils;
+    public final CtrlConsultas productoUtils;
 
     public CtrlProducto(Producto producto, ConsultaProducto productoConsulta, FrmSupermercado frm, CtrlMails mail) {
         this.frm = frm;
@@ -41,7 +46,7 @@ public class CtrlProducto implements ActionListener {
         this.frm.btnMasivo.addActionListener(this);
         this.frm.btnSalirProductos.addActionListener(this);
         //this.frm.btnAdjuntar.addActionListener(this);
-        this.productoUtils = new CtrlUtils(producto, productoConsulta, frm);
+        this.productoUtils = new CtrlConsultas(producto, productoConsulta, frm);
         //this.frm.tablaProductos.setModel(consultaProducto.model);
         //this.frm.btnRegresarProductos.addActionListener(this);
     }
@@ -96,7 +101,13 @@ public class CtrlProducto implements ActionListener {
         }
 
         if (e.getSource() == frm.btnEnviar) {
-            mail.enviarCorreoAdjunto();
+            
+            if(mail.enviarCorreoAdjunto(frm.getHTML())){
+                JOptionPane.showMessageDialog(null, "Correo enviado correctamente");
+            }else{
+                JOptionPane.showMessageDialog(null, "Error al enviar correo");
+            }
+            
 
         }
         

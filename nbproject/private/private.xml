@@ -2,6 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Vista/Registro.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Vista/ElegirArchivo.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Vista/HtmlEditor.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Modelo/ConsultaProducto.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Controlador/CtrlConsultas.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Controlador/HtmlEditorExample.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Controlador/CtrlGetterSetter.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Controlador/CtrlMails.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Controlador/CtrlUsuarios.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Vista/FrmSupermercado.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/Controlador/CtrlProducto.java</file>
+            <file>file:/C:/Users/JorgeG/Documents/NetBeansProjects/SupermercadoMVC/src/mvcsupermercado/MVCSupermercado.java</file>
+        </group>
     </open-files>
 </project-private>

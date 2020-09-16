@@ -18,7 +18,7 @@ import javax.swing.JScrollPane;
  *
  * @author JorgeG
  */
-public class CtrlUtils {
+public class CtrlConsultas {
 
     private FrmSupermercado frm;
     private Producto producto;
@@ -39,7 +39,7 @@ public class CtrlUtils {
     //this.frm.tablaProductos.setModel(consultaProducto.model);
     //this.frm.btnRegresarProductos.addActionListener(this);
     // }
-    public CtrlUtils(Usuarios usuario, ConsultaUsuarios consultaUsuario, Registro frmRegistro) {
+    public CtrlConsultas(Usuarios usuario, ConsultaUsuarios consultaUsuario, Registro frmRegistro) {
         this.frmRegistro = frmRegistro;
         this.usuario = usuario;
         this.consultaUsuario = consultaUsuario;
@@ -47,7 +47,7 @@ public class CtrlUtils {
         this.gs = new CtrlGetterSetter(frmRegistro, consultaUsuario, usuario);
     }
 
-    public CtrlUtils(Producto producto, ConsultaProducto productoConsulta, FrmSupermercado frm) {
+    public CtrlConsultas(Producto producto, ConsultaProducto productoConsulta, FrmSupermercado frm) {
         this.frm = frm;
         this.producto = producto;
         this.productoConsulta = productoConsulta;

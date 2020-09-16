@@ -104,6 +104,9 @@ public class CtrlGetterSetter {
             case "correo":
                 text = frm.txtCorreo.getText();
                 break;
+            case "asunto":
+                text = frm.txtAsunto.getText();
+                break;
         }
         return text;
     }

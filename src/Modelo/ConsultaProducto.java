@@ -363,11 +363,17 @@ public class ConsultaProducto extends ConexionSQL {
         Vector<String> columnNames = new Vector<String>();
         int columnCount = metaData.getColumnCount();
 
-        for (int column = 1; column <= columnCount; column++) {
-            if (column != columnaSaltada) {
-                columnNames.add(metaData.getColumnName(column));
-            }
-        }
+        //for (int column = 1; column <= columnCount; column++) {
+           // if (column != columnaSaltada) {
+            //    columnNames.add(metaData.getColumnName(column));
+          //  }
+        //}
+        columnNames.add("ID");
+        columnNames.add("Tipo");
+        columnNames.add("Producto");
+        columnNames.add("Descripción");
+        columnNames.add("Cantidad");
+        columnNames.add("Precio");
 
         // data of the table
         Vector<Vector<Object>> data = new Vector<Vector<Object>>();
