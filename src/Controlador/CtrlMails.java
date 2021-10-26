@@ -72,15 +72,6 @@ public class CtrlMails {
 
             Session session = Session.getDefaultInstance(props);
 
-            String correoRemitente = "jgonzalezc42@miumg.edu.gt";
-            String passwordRemitente = "odamaplaya3";
-            String correoReceptor = frm.txtCorreo.getText();
-            String asunto = "FELIZ MESANIVERSARIO MI REINA HERMOSAAAAAAAA";
-            String mensaje = "Mi vida hermosa <br> <b>TE AMO CON TODO MI CORAZONCITOOOO</b><br><br>"
-                    + " <b> GRACIAS POR PASAR A MI LADO OTRO MESSSSSSS MI VIDA PRECIOSAAAAA</b>"
-                    + "<br> <b> CADA DÍA QUE PASO A TU LADO TE AMO MÁSSSSSSSSS</b>"
-                    + "<br> <b> ESPERO ALEGRAR TODOS TUS DÍAS TANTO COMO TÚU ALEGRAS LOS MÍOSSS MI PRINCESITA HERMOSAAAAAAAA</b>";
-
             MimeMessage message = new MimeMessage(session);
 
             message.setFrom(new InternetAddress(correoRemitente));
